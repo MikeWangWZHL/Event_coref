@@ -57,6 +57,18 @@ class Event:
     def get_trigger_stem(self,stemmer):
         return stemmer.stem(self.trigger['text'])
 
+    def get_trigger_synset(self,trigger_pos):
+        if trigger_pos == 'VERB':
+            pos = 'v'
+        elif trigger_pos == 'ADJ':
+            pos = 'a'
+        elif trigger_pos == 'ADV':
+            pos = 'r'
+        else:
+            pos = 'n'
+        # print(wn.synsets(self.trigger['text'],pos = pos)[0])
+        return wn.synsets(self.trigger['text'],pos = pos)[0]
+
 
 """load data"""
 # data loader
@@ -119,8 +131,13 @@ def get_baseline_feats(AEM,prior_event_mentions,nlp_pipeline,stemmer):
         if AEM.get_trigger_stem(stemmer) == pe.get_trigger_stem(stemmer): # not clear accroding to the paper
             stem_match = 1
 
-    #trigger sim
-    trigger_sim = None
+    ## trigger sim
+    ## path_similarity:
+    # trigger_sim = AEM.get_trigger_synset(pos_AEM).path_similarity(LEM.get_trigger_synset(pos_LEM))
+    ## Leacock-Chodorow Similarity:
+    trigger_sim = AEM.get_trigger_synset(pos_AEM).lch_similarity(LEM.get_trigger_synset(pos_LEM))
+    ## Wu-Palmer Similarity:
+    # trigger_sim = AEM.get_trigger_synset(pos_AEM).wup_similarity(LEM.get_trigger_synset(pos_LEM))
     
     return  type_pair, subtype_pair, trigger_pair, pos_pair, is_nominal_AEM, nom_number_AEM, is_pronominal_AEM, exact_match, stem_match, trigger_sim
 
