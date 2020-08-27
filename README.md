@@ -1,8 +1,8 @@
 # Output files:
 
 ## Note: 
-Baseline, distance, argument features are between two events, so each line contains two events;
-Attribute features are for single event, and it can be used to train model to get, for example *Modality* feature for a event, 
+- Baseline, distance, argument features are between two events, so each line contains two events;
+- Attribute features are for single event, and it can be used to train model to get, for example *Modality* feature for a event, 
 and then be further used in caculating *Modality conflict* feature between two events;  
 
 ## baseline, distance, argument features for each event pairs within train docs:
